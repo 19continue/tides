@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>潮声抢票压测控制台</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">潮</div>
+          <div>
+            <div class="brand-name">潮声压测</div>
+            <div class="brand-sub">抢票链路控制台</div>
+          </div>
+        </div>
+
+        <nav class="side-nav" aria-label="页面导航">
+          <a href="#service-config">服务</a>
+          <a href="#user-generator">用户</a>
+          <a href="#run-config">压测</a>
+          <a href="#result-panel">结果</a>
+        </nav>
+
+        <div class="side-note">
+          建议按 20、100、500、1000、3000 阶梯验证。用户生成接口会真实写入用户、手机号、邮箱和购票人数据。
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <h1>抢票压测控制台</h1>
+            <p>在页面内配置服务地址、用户生成、目标节目/电影和并发参数，运行后实时查看成功率、吞吐和延迟。</p>
+          </div>
+          <div class="run-state">
+            <span id="state-dot" class="state-dot idle"></span>
+            <span id="state-text">未开始</span>
+          </div>
+        </header>
+
+        <form id="run-form">
+          <section id="service-config" class="section">
+            <div class="section-head">
+              <div>
+                <h2>服务配置</h2>
+                <p>默认直连本机微服务；走网关时可填网关后的完整服务前缀。</p>
+              </div>
+            </div>
+            <div class="field-grid three">
+              <label>
+                用户服务
+                <input name="userBaseUrl" spellcheck="false" />
+              </label>
+              <label>
+                节目服务
+                <input name="programBaseUrl" spellcheck="false" />
+              </label>
+              <label>
+                订单服务
+                <input name="orderBaseUrl" spellcheck="false" />
+              </label>
+            </div>
+            <div class="field-grid three">
+              <label>
+                支付推进 Token
+                <input name="simulatorPayToken" spellcheck="false" />
+              </label>
+              <label>
+                用户生成 Token
+                <input name="simulatorUserToken" spellcheck="false" />
+              </label>
+              <label>
+                可选配置文件
+                <input name="configPath" spellcheck="false" />
+              </label>
+            </div>
+            <details class="advanced">
+              <summary>高级接口路径</summary>
+              <div class="field-grid three">
+                <label>
+                  用户准备接口
+                  <input name="userPrepareEndpoint" spellcheck="false" />
+                </label>
+                <label>
+                  下单接口
+                  <input name="createOrderEndpoint" spellcheck="false" />
+                </label>
+                <label>
+                  订单缓存接口
+                  <input name="orderCacheEndpoint" spellcheck="false" />
+                </label>
+                <label>
+                  模拟支付接口
+                  <input name="simulatePayEndpoint" spellcheck="false" />
+                </label>
+                <label>
+                  电影场次接口
+                  <input name="movieScreeningEndpoint" spellcheck="false" />
+                </label>
+                <label>
+                  电影座位接口
+                  <input name="movieSeatEndpoint" spellcheck="false" />
+                </label>
+              </div>
+            </details>
+          </section>
+
+          <section id="user-generator" class="section">
+            <div class="section-head">
+              <div>
+                <h2>压测用户</h2>
+                <p>生成后会调用后端创建真实用户和购票人，并自动回填用户文件路径。</p>
+              </div>
+              <button id="generate-users-button" class="secondary" type="button">生成并创建用户</button>
+            </div>
+            <div class="field-grid four">
+              <label>
+                用户数量
+                <input name="generatorCount" type="number" min="1" max="20000" />
+              </label>
+              <label>
+                起始序号
+                <input name="generatorStartIndex" type="number" min="0" />
+              </label>
+              <label>
+                手机号前缀
+                <input name="generatorMobilePrefix" spellcheck="false" />
+              </label>
+              <label>
+                每人购票人
+                <input name="generatorTicketUserCount" type="number" min="1" max="5" />
+              </label>
+              <label>
+                邮箱域名
+                <input name="generatorEmailDomain" spellcheck="false" />
+              </label>
+              <label>
+                默认密码
+                <input name="generatorPassword" spellcheck="false" />
+              </label>
+              <label>
+                购票人名前缀
+                <input name="generatorRelNamePrefix" />
+              </label>
+              <label>
+                输出文件
+                <input name="generatorOutputPath" spellcheck="false" />
+              </label>
+            </div>
+            <label class="check-line">
+              <input name="generatorOverwritePassword" type="checkbox" />
+              已存在同手机号用户时覆盖密码
+            </label>
+            <div id="user-generate-result" class="inline-status">尚未生成，本次运行会读取下面的用户文件。</div>
+          </section>
+
+          <section id="run-config" class="section">
+            <div class="section-head">
+              <div>
+                <h2>运行配置</h2>
+                <p>目标 JSON 可直接在页面编辑；留空时才读取目标文件。</p>
+              </div>
+              <button id="start-button" type="submit">启动压测</button>
+            </div>
+            <div class="field-grid four">
+              <label>
+                用户文件
+                <input name="usersPath" spellcheck="false" />
+              </label>
+              <label>
+                目标文件
+                <input name="targetsPath" spellcheck="false" />
+              </label>
+              <label>
+                本次用户数
+                <input name="n" type="number" min="1" />
+              </label>
+              <label>
+                抢票并发
+                <input name="rushConcurrency" type="number" min="1" />
+              </label>
+              <label>
+                支付并发
+                <input name="payConcurrency" type="number" min="1" />
+              </label>
+              <label>
+                每目标尝试
+                <input name="attemptsPerTarget" type="number" min="1" />
+              </label>
+              <label>
+                默认票数
+                <input name="defaultTicketCount" type="number" min="1" />
+              </label>
+              <label>
+                统一开抢时间
+                <input name="startAt" spellcheck="false" placeholder="例如 2026-05-26T14:00:00+08:00" />
+              </label>
+            </div>
+            <div class="field-grid four compact">
+              <label>
+                轮询间隔 ms
+                <input name="pollIntervalMs" type="number" min="50" />
+              </label>
+              <label>
+                轮询超时 ms
+                <input name="pollTimeoutMs" type="number" min="1000" />
+              </label>
+              <label>
+                HTTP 超时 ms
+                <input name="httpTimeoutMs" type="number" min="1000" />
+              </label>
+              <label>
+                HTTP 重试
+                <input name="httpRetries" type="number" min="0" />
+              </label>
+            </div>
+            <div class="switch-row">
+              <label class="check-line">
+                <input name="paymentEnabled" type="checkbox" />
+                抢到票后推进模拟支付
+              </label>
+              <label class="check-line">
+                <input name="reuseUsers" type="checkbox" />
+                用户不足时允许复用
+              </label>
+            </div>
+            <label class="json-field">
+              目标 JSON
+              <textarea name="targetsJson" spellcheck="false"></textarea>
+            </label>
+          </section>
+        </form>
+
+        <section id="result-panel" class="section result-section">
+          <div class="section-head">
+            <div>
+              <h2>实时结果</h2>
+              <p id="run-id">暂无运行</p>
+            </div>
+            <span id="progress-text" class="progress-text">0 / 0</span>
+          </div>
+          <div class="progress-track">
+            <div id="progress-bar" class="progress-bar"></div>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric">
+              <span>总用户</span>
+              <strong id="metric-total">-</strong>
+            </div>
+            <div class="metric">
+              <span>完成用户</span>
+              <strong id="metric-completed">-</strong>
+            </div>
+            <div class="metric">
+              <span>抢票成功率</span>
+              <strong id="metric-success-rate">-</strong>
+            </div>
+            <div class="metric">
+              <span>支付推进率</span>
+              <strong id="metric-paid-rate">-</strong>
+            </div>
+            <div class="metric">
+              <span>成功订单/s</span>
+              <strong id="metric-tps">-</strong>
+            </div>
+            <div class="metric">
+              <span>端到端 P99</span>
+              <strong id="metric-p99">-</strong>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <div class="panel wide">
+              <div class="panel-head">
+                <h3>延迟分位</h3>
+                <span>毫秒，越低越稳定</span>
+              </div>
+              <div id="latency-list" class="latency-list empty">等待运行数据</div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <h3>质量门槛</h3>
+                <span>演示口径</span>
+              </div>
+              <div id="quality-list" class="quality-list empty">等待运行数据</div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <h3>目标命中</h3>
+                <span>订单分布</span>
+              </div>
+              <div id="target-list" class="bar-list empty">等待运行数据</div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <h3>失败原因</h3>
+                <span>业务和系统错误</span>
+              </div>
+              <div id="failure-list" class="bar-list empty">等待运行数据</div>
+            </div>
+            <div class="panel wide">
+              <div class="panel-head">
+                <h3>最近事件</h3>
+                <span>最多显示 80 条</span>
+              </div>
+              <div class="event-table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>时间</th>
+                      <th>事件</th>
+                      <th>用户</th>
+                      <th>目标</th>
+                      <th>订单</th>
+                      <th>耗时</th>
+                    </tr>
+                  </thead>
+                  <tbody id="event-body">
+                    <tr><td colspan="6">等待运行数据</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

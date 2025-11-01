@@ -1,0 +1,223 @@
+package com.tides.scheduletask;
+
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.http.HttpRequest;
+import com.alibaba.fastjson.JSON;
+import com.tides.BusinessThreadPool;
+import com.tides.core.RedisKeyManage;
+import com.tides.domain.DiscardOrder;
+import com.tides.domain.OrderCreateMq;
+import com.tides.dto.OrderTicketUserCreateDto;
+import com.tides.dto.ProgramGetDto;
+import com.tides.dto.ProgramOrderCreateDto;
+import com.tides.dto.TicketUserListDto;
+import com.tides.dto.UserLoginDto;
+import com.tides.enums.BaseCode;
+import com.tides.enums.DiscardOrderReason;
+import com.tides.redis.RedisCache;
+import com.tides.redis.RedisKeyBuild;
+import com.tides.service.OrderService;
+import com.tides.simulation.module.CreateProgramOrderResultModule;
+import com.tides.simulation.module.ProgramDetailResultModule;
+import com.tides.simulation.module.TickerUserListResultModule;
+import com.tides.simulation.module.UserLoginResultModule;
+import com.tides.util.DateUtils;
+import com.tides.util.StringUtil;
+import com.tides.vo.ProgramVo;
+import com.tides.vo.TicketUserVo;
+import com.tides.vo.UserLoginVo;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static com.tides.simulation.constant.SimulationOrderConstant.CREATE_PROGRAM_ORDER_URL;
+import static com.tides.simulation.constant.SimulationOrderConstant.PROGRAM_DETAIL_URL;
+import static com.tides.simulation.constant.SimulationOrderConstant.TICKET_USER_LIST_URL;
+import static com.tides.simulation.constant.SimulationOrderConstant.USER_LOGIN_URL;
+
+/**
+ * @description: 订单服务定时任务重置
+ * @author: 19continue
+ **/
+@Slf4j
+@Component
+public class PresentationOrderDataTask {
+    
+    @Autowired
+    private OrderService orderService;
+    
+    @Autowired
+    private RedisCache redisCache;
+    
+    @Scheduled(cron = "0 30 23 * * ?")
+    public void executeTask(){
+        BusinessThreadPool.execute( () -> {
+            try {
+                log.info("订单服务定时任务重置执行");
+                //真实删除所有的订单和购票人订单，购票人订单记录(潮声普通版本没有这步)
+                orderService.delOrderAndOrderTicketUser();
+                //模拟创建订单
+                simulationCreateOrder();
+                //将原有的模拟废弃订单数据删除
+                redisCache.del(RedisKeyBuild.createRedisKey(RedisKeyManage.DISCARD_ORDER, 34));
+                //模拟废弃订单数据，放入Redis中
+                redisCache.leftPushForList(RedisKeyBuild.createRedisKey(RedisKeyManage.DISCARD_ORDER, 34),
+                        simulationDiscardOrder());
+            }catch (Exception e) {
+                log.error("executeTask error",e);
+            }
+        });
+    }
+    
+    /**
+     * 模拟废弃订单数据
+     */
+    private DiscardOrder simulationDiscardOrder(){
+        //模拟废弃订单数据
+        OrderCreateMq orderCreateMq = new OrderCreateMq();
+        orderCreateMq.setCreateOrderTime(DateUtils.now());
+        orderCreateMq.setIdentifierId(1421864797540605952L);
+        orderCreateMq.setOrderNumber(1965791442215448582L);
+        orderCreateMq.setOrderPrice(new BigDecimal(2000));
+        orderCreateMq.setOrderVersion(4);
+        orderCreateMq.setProgramId(34L);
+        orderCreateMq.setProgramItemPicture("https://s21.ax1x.com/2024/06/07/pkYzl9J.jpg");
+        orderCreateMq.setProgramPermitChooseSeat(0);
+        orderCreateMq.setProgramPlace("工人体育馆");
+        orderCreateMq.setProgramShowTime(DateUtils.addWeek(DateUtils.addHour(DateUtils.now(), -4), 1));
+        orderCreateMq.setProgramTitle("周杰伦“嘉年华”世界巡回演唱会");
+        orderCreateMq.setUserId(1421653760027484162L);
+        
+        List<OrderTicketUserCreateDto> orderTicketUserCreateDtoList = new ArrayList<>();
+        OrderTicketUserCreateDto orderTicketUserCreateDto = new OrderTicketUserCreateDto();
+        orderTicketUserCreateDto.setCreateOrderTime(DateUtils.now());
+        orderTicketUserCreateDto.setOrderNumber(1965791442215448582L);
+        orderTicketUserCreateDto.setOrderPrice(new BigDecimal(2000));
+        orderTicketUserCreateDto.setProgramId(34L);
+        orderTicketUserCreateDto.setSeatId(10251L);
+        orderTicketUserCreateDto.setSeatInfo("551排1列");
+        orderTicketUserCreateDto.setTicketCategoryId(46L);
+        orderTicketUserCreateDto.setTicketUserId(1421653760027500032L);
+        orderTicketUserCreateDto.setUserId(1421653760027484162L);
+        orderTicketUserCreateDtoList.add(orderTicketUserCreateDto);
+        orderCreateMq.setOrderTicketUserCreateDtoList(orderTicketUserCreateDtoList);
+        
+        return new DiscardOrder(orderCreateMq, DiscardOrderReason.CONSUMER_DELAY.getCode());
+    }
+    
+    
+    public void simulationCreateOrder(){
+        try {
+            //先登录
+            UserLoginDto userLoginDto = new UserLoginDto();
+            userLoginDto.setCode("0001");
+            userLoginDto.setMobile("13154982525");
+            userLoginDto.setPassword("tides888");
+            UserLoginVo userLoginVo = userLoginHttp(userLoginDto);
+            if (Objects.isNull(userLoginVo)) {
+                log.error("模拟用户登录失败 userLoginDto:{}",JSON.toJSONString(userLoginDto));
+                return;
+            }
+            //获取购票人列表
+            TicketUserListDto ticketUserListDto = new TicketUserListDto();
+            ticketUserListDto.setUserId(userLoginVo.getUserId());
+            List<TicketUserVo> ticketUserVoList = tickerUserListHttp(ticketUserListDto);
+            if (CollectionUtil.isEmpty(ticketUserVoList)){
+                log.error("模拟获取购票人列表失败 ticketUserListDto:{}",JSON.toJSONString(ticketUserListDto));
+                return;
+            }
+            //获取节目详情
+            ProgramGetDto programGetDto = new ProgramGetDto();
+            //这里固定使用 周杰伦“嘉年华”世界巡回演唱会 这个节目ID
+            programGetDto.setId(34L);
+            ProgramVo programVo = programDetailHttp(programGetDto);
+            if (Objects.isNull(programVo)) {
+                log.error("模拟获取节目详情失败 programGetDto:{}",JSON.toJSONString(programGetDto));
+                return;
+            }
+            //获取第一个票档id
+            ProgramOrderCreateDto programOrderCreateDto = getProgramOrderCreateDto(programVo, userLoginVo,
+                    ticketUserVoList);
+            String orderNumber = createProgramOrder(programOrderCreateDto);
+            if (StringUtil.isEmpty(orderNumber)) {
+                log.error("模拟创建订单失败 programOrderCreateDto:{}",JSON.toJSONString(programOrderCreateDto));
+            }else {
+                log.info("模拟创建订单成功 orderNumber:{}",orderNumber);
+            }
+        }catch (Exception e) {
+            log.error("simulationCreateOrder error",e);   
+        }
+    }
+    
+    @NotNull
+    private static ProgramOrderCreateDto getProgramOrderCreateDto(ProgramVo programVo, UserLoginVo userLoginVo, 
+                                                                  List<TicketUserVo> ticketUserVoList) {
+        Long ticketCategoryId = programVo.getTicketCategoryVoList().get(0).getId();
+        //创建订单
+        ProgramOrderCreateDto programOrderCreateDto = new ProgramOrderCreateDto();
+        programOrderCreateDto.setUserId(userLoginVo.getUserId());
+        programOrderCreateDto.setProgramId(programVo.getId());
+        List<Long> ticketUserIdList = new ArrayList<>();
+        ticketUserIdList.add(ticketUserVoList.get(0).getId());
+        programOrderCreateDto.setTicketUserIdList(ticketUserIdList);
+        programOrderCreateDto.setTicketCategoryId(ticketCategoryId);
+        programOrderCreateDto.setTicketCount(1);
+        return programOrderCreateDto;
+    }
+    
+    public UserLoginVo userLoginHttp(UserLoginDto userLoginDto){
+        String result = HttpRequest.post(USER_LOGIN_URL)
+                .timeout(20000)
+                .body(JSON.toJSONString(userLoginDto))
+                .execute().body();
+        UserLoginResultModule userLoginResultModule = JSON.parseObject(result, UserLoginResultModule.class);
+        if (!Objects.equals(userLoginResultModule.getCode(), BaseCode.SUCCESS.getCode())) {
+            return null;
+        }
+        return userLoginResultModule.getData();
+    }
+    
+    public List<TicketUserVo> tickerUserListHttp(TicketUserListDto ticketUserListDto){
+        String result = HttpRequest.post(TICKET_USER_LIST_URL)
+                .timeout(20000)
+                .body(JSON.toJSONString(ticketUserListDto))
+                .execute().body();
+        TickerUserListResultModule tickerUserListResultModule = JSON.parseObject(result, TickerUserListResultModule.class);
+        if (!Objects.equals(tickerUserListResultModule.getCode(), BaseCode.SUCCESS.getCode())) {
+            return null;
+        }
+        return tickerUserListResultModule.getData();
+    }
+    
+    public ProgramVo programDetailHttp(ProgramGetDto programGetDto){
+        String result = HttpRequest.post(PROGRAM_DETAIL_URL)
+                .timeout(20000)
+                .body(JSON.toJSONString(programGetDto))
+                .execute().body();
+        ProgramDetailResultModule programDetailResultModule = JSON.parseObject(result, ProgramDetailResultModule.class);
+        if (!Objects.equals(programDetailResultModule.getCode(), BaseCode.SUCCESS.getCode())) {
+            return null;
+        }
+        return programDetailResultModule.getData();
+    }
+    
+    public String createProgramOrder(ProgramOrderCreateDto programOrderCreateDto){
+        String result = HttpRequest.post(CREATE_PROGRAM_ORDER_URL)
+                .timeout(20000)
+                .body(JSON.toJSONString(programOrderCreateDto))
+                .execute().body();
+        CreateProgramOrderResultModule createProgramOrderResultModule = JSON.parseObject(result, CreateProgramOrderResultModule.class);
+        if (!Objects.equals(createProgramOrderResultModule.getCode(), BaseCode.SUCCESS.getCode())) {
+            return null;
+        }
+        return createProgramOrderResultModule.getData();
+        
+    } 
+}

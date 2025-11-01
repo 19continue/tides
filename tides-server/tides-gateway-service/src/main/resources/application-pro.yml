@@ -1,0 +1,88 @@
+spring:
+  cloud:
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: ${prefix.distinction.name:tides}-base-data-service
+          uri: lb://${prefix.distinction.name:tides}-base-data-service
+          predicates:
+            - Path=/tides/basedata/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 基础数据服务
+
+        - id: ${prefix.distinction.name:tides}-customize-service
+          uri: lb://${prefix.distinction.name:tides}-customize-service
+          predicates:
+            - Path=/tides/customize/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 定制化服务
+
+        - id: ${prefix.distinction.name:tides}-job-service
+          uri: lb://${prefix.distinction.name:tides}-job-service
+          predicates:
+            - Path=/tides/job/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 任务执行服务
+
+        - id: ${prefix.distinction.name:tides}-order-service
+          uri: lb://${prefix.distinction.name:tides}-order-service
+          predicates:
+            - Path=/tides/order/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 订单服务
+
+        - id: ${prefix.distinction.name:tides}-migrate-service
+          uri: lb://${prefix.distinction.name:tides}-migrate-service
+          predicates:
+            - Path=/tides/migrate/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 迁移服务
+
+        - id: ${prefix.distinction.name:tides}-pay-service
+          uri: lb://${prefix.distinction.name:tides}-pay-service
+          predicates:
+            - Path=/tides/pay/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 支付服务
+
+        - id: ${prefix.distinction.name:tides}-program-service
+          uri: lb://${prefix.distinction.name:tides}-program-service
+          predicates:
+            - Path=/tides/program/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 节目服务
+
+        - id: ${prefix.distinction.name:tides}-user-service
+          uri: lb://${prefix.distinction.name:tides}-user-service
+          predicates:
+            - Path=/tides/user/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 用户服务
+
+        - id: ${prefix.distinction.name:tides}-admin-service
+          uri: lb://${prefix.distinction.name:tides}-admin-service
+          predicates:
+            - Path=/tides/admin/**
+          filters:
+            - StripPrefix=2
+          metadata:
+            title: 监听服务

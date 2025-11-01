@@ -1,0 +1,18 @@
+[
+  {
+    "name": "演出目标一",
+    "type": "program",
+    "programId": "请替换为节目ID",
+    "ticketCategoryId": "请替换为票档ID，留空则自动选最低价",
+    "ticketCount": 1,
+    "seatMode": "auto"
+  },
+  {
+    "name": "电影目标一",
+    "type": "movie",
+    "programId": "请替换为电影关联的节目ID",
+    "screeningIds": ["请替换为场次ID"],
+    "ticketCount": 1,
+    "seatMode": "manual"
+  }
+]

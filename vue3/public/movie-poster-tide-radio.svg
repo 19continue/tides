@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="960" viewBox="0 0 720 960" role="img" aria-label="ChaoSheng movie poster tide radio">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111"/>
+      <stop offset=".56" stop-color="#242424"/>
+      <stop offset="1" stop-color="#f4b700"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffd21f" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".18"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="960" fill="url(#bg)"/>
+  <circle cx="542" cy="190" r="78" fill="#ffd21f"/>
+  <path d="M110 600c82-50 150-50 238 0s156 50 262 0v86c-106 50-174 50-262 0s-156-50-238 0z" fill="#ffd21f" opacity=".92"/>
+  <path d="M90 724c98-44 176-42 276 2s170 42 266-3" fill="none" stroke="#fff" stroke-width="12" opacity=".72"/>
+  <path d="M124 284h256l136 190H260z" fill="url(#beam)" opacity=".86"/>
+  <rect x="114" y="218" width="242" height="296" rx="22" fill="#141414" stroke="#ffd21f" stroke-width="10"/>
+  <rect x="154" y="260" width="162" height="106" rx="16" fill="#ffd21f"/>
+  <circle cx="206" cy="424" r="24" fill="#ffd21f"/>
+  <circle cx="266" cy="424" r="24" fill="#ffd21f"/>
+  <path d="M128 828h464" stroke="#111" stroke-width="16" opacity=".62"/>
+  <path d="M180 860h360" stroke="#111" stroke-width="8" opacity=".5"/>
+</svg>

@@ -1,0 +1,4 @@
+# 支付宝回调地址
+orderPayNotifyUrl: http://tides-javaup.chat:6085/tides/order/order/alipay/notify
+# 支付成功页面
+orderPayReturnUrl: http://tides-javaup.chat/order/paySuccess

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-label="ChaoSheng movie detail moon mail">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1">
+      <stop offset="0" stop-color="#121212"/>
+      <stop offset=".7" stop-color="#303030"/>
+      <stop offset="1" stop-color="#f6c400"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="520" fill="url(#bg)"/>
+  <circle cx="802" cy="142" r="76" fill="#ffd21f"/>
+  <path d="M832 74a76 76 0 1 0 0 136 58 58 0 1 1 0-136z" fill="#161616" opacity=".84"/>
+  <rect x="132" y="154" width="390" height="224" rx="18" fill="#fff4bc" stroke="#111" stroke-width="10"/>
+  <path d="M148 178l179 138 179-138" fill="none" stroke="#111" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M88 414c136-40 240-40 376 0s240 40 420 0" fill="none" stroke="#ffd21f" stroke-width="24" opacity=".9"/>
+</svg>

@@ -1,0 +1,64 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+
+# Logs and diagnostics
+logs/
+*.log
+*.hprof
+
+# Java and Maven outputs
+target/
+build/
+dependency-reduced-pom.xml
+**/dependency-reduced-pom.xml
+.flattened-pom.xml
+**/.flattened-pom.xml
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Local dependency caches
+.m2/
+.pnpm-store/
+.upload-git/
+
+# Frontend dependencies and build outputs
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.turbo/
+**/.turbo/
+coverage/
+test-results/
+playwright-report/
+.vite/
+.nitro/
+.output/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files. Keep real secrets local and commit examples only.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Local packaged or personal files
+BOOT-INF/
+HELP.md
+CLAUDE.md
+* - 副本/
+简历/

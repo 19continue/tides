@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="520" viewBox="0 0 360 520" role="img" aria-label="热门电影通用海报">
+  <defs>
+    <linearGradient id="posterBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="0.48" stop-color="#7c2d12"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="screenGlow" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="520" fill="url(#posterBg)"/>
+  <rect x="36" y="52" width="288" height="170" rx="10" fill="#020617" opacity="0.78"/>
+  <path d="M58 194 134 104l47 56 38-42 83 76Z" fill="url(#screenGlow)" opacity="0.9"/>
+  <circle cx="278" cy="91" r="24" fill="#fef3c7" opacity="0.9"/>
+  <g fill="none" stroke="#f8fafc" stroke-width="3" opacity="0.55">
+    <path d="M67 285h226"/>
+    <path d="M79 314h202"/>
+    <path d="M91 343h178"/>
+  </g>
+  <g fill="#f8fafc" font-family="Arial, 'Microsoft YaHei', sans-serif" text-anchor="middle">
+    <text x="180" y="404" font-size="34" font-weight="700">潮声热映</text>
+    <text x="180" y="442" font-size="18">HOT MOVIE SEED</text>
+    <text x="180" y="472" font-size="15" opacity="0.78">选座 · 锁座 · 下单</text>
+  </g>
+</svg>

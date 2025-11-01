@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tides.mapper.OrderTicketUserMapper">
+    <select id="selectOrderTicketUserAggregate" resultType="com.tides.entity.OrderTicketUserAggregate">
+        select
+            order_number,count(*) as order_ticket_user_count
+        from d_order_ticket_user
+        where order_number in
+        <foreach collection='orderNumberList' item='orderNumber' index='index' open='(' close=')' separator=','>
+            #{orderNumber,jdbcType=BIGINT}
+        </foreach>
+        group by order_number
+    </select>
+
+    <select id="selectMovieSalesCount" resultType="com.tides.vo.MovieOrderSalesCountVo">
+        select
+            program_id as programId,
+            screening_id as screeningId,
+            count(distinct order_number) as paidOrderCount,
+            count(*) as paidTicketCount
+        from d_order_ticket_user
+        where status = 1
+          and order_status = 3
+          and seat_id is not null
+          and screening_id is not null
+        <if test='programIdList != null and programIdList.size > 0'>
+          and program_id in
+          <foreach collection='programIdList' item='programId' open='(' separator=',' close=')'>
+              #{programId,jdbcType=BIGINT}
+          </foreach>
+        </if>
+        <if test='screeningIdList != null and screeningIdList.size > 0'>
+          and screening_id in
+          <foreach collection='screeningIdList' item='screeningId' open='(' separator=',' close=')'>
+              #{screeningId,jdbcType=BIGINT}
+          </foreach>
+        </if>
+        group by program_id, screening_id
+    </select>
+
+    <select id="selectMovieSalesCountByOrderNumbers" resultType="com.tides.vo.MovieOrderSalesCountVo">
+        select
+            program_id as programId,
+            screening_id as screeningId,
+            count(distinct order_number) as paidOrderCount,
+            count(*) as paidTicketCount
+        from d_order_ticket_user
+        where status = 1
+          and order_status = 3
+          and seat_id is not null
+          and screening_id is not null
+          and order_number in
+          <foreach collection='orderNumberList' item='orderNumber' open='(' separator=',' close=')'>
+              #{orderNumber,jdbcType=BIGINT}
+          </foreach>
+        group by program_id, screening_id
+    </select>
+
+    <delete id="relDelOrderTicketUser">
+        delete
+        from d_order_ticket_user
+        where order_status in (1,2,3,4)
+    </delete>
+</mapper>

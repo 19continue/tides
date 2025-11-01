@@ -1,0 +1,1 @@
+{"serviceName":"program","snapshotExists":true,"snapshotTime":"2026-05-26 03:08:07","tableCount":7,"rowCount":320828,"tableRowCount":{"d_seat":35726,"d_ticket_category":326,"d_movie_screening_price":5813,"d_movie_screening_seat":278932,"d_movie_inventory_event":31,"d_movie_inventory_reconcile_issue":0,"d_program_record_task":0}}

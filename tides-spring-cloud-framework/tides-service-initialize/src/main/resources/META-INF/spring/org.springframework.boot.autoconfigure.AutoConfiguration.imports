@@ -1,0 +1,2 @@
+com.tides.initialize.config.InitializeAutoConfig
+com.tides.initialize.impl.composite.CompositeAutoConfiguration

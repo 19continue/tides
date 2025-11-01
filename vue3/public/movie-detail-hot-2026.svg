@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-label="热门电影详情图">
+  <defs>
+    <linearGradient id="detailBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.42" stop-color="#6b21a8"/>
+      <stop offset="1" stop-color="#164e63"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#fef9c3" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fef9c3" stop-opacity="0.68"/>
+      <stop offset="1" stop-color="#fef9c3" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="420" fill="url(#detailBg)"/>
+  <path d="M0 330c130-45 270-52 420-18 170 38 335 28 540-43v151H0Z" fill="#020617" opacity="0.5"/>
+  <path d="M120 92h720v180H120z" fill="#020617" opacity="0.72"/>
+  <path d="M150 244 312 128l118 86 76-58 154 88Z" fill="url(#beam)" opacity="0.95"/>
+  <g fill="#f8fafc" font-family="Arial, 'Microsoft YaHei', sans-serif">
+    <text x="120" y="350" font-size="36" font-weight="700">热门电影真实抢票样例</text>
+    <text x="120" y="384" font-size="18" opacity="0.8">含节目、影院、影厅、场次、票价、座位库存，可用于前台选座下单验证</text>
+  </g>
+</svg>

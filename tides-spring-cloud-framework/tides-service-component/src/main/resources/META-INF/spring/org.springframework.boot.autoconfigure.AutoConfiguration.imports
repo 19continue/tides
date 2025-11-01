@@ -1,0 +1,2 @@
+com.tides.feign.ExtraFeignAutoConfiguration
+com.tides.filter.FilterAutoConfiguration

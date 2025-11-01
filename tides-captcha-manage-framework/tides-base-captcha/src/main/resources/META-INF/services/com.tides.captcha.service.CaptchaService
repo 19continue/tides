@@ -1,0 +1,3 @@
+com.tides.captcha.service.impl.BlockPuzzleCaptchaServiceImpl
+com.tides.captcha.service.impl.ClickWordCaptchaServiceImpl
+com.tides.captcha.service.impl.DefaultCaptchaServiceImpl

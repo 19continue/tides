@@ -1,0 +1,489 @@
+dataSources: 
+  ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://www.cookframe.com:3306/tides_program_0?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&autoReconnect=true
+    username: root
+    password: qazxsw890
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      keepalive-time: 300000
+
+  ds_1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://www.cookframe.com:3306/tides_program_1?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai&autoReconnect=true
+    username: root
+    password: qazxsw890
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      keepalive-time: 300000
+    
+rules:
+  - !SHARDING
+    tables:
+      d_program:
+        actualDataNodes: ds_${0..1}.d_program_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: databaseProgramModModel
+        tableStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: tableProgramModModel     
+      d_program_group:
+        actualDataNodes: ds_${0..1}.d_program_group_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: databaseProgramGroupModModel 
+        tableStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: tableProgramGroupModModel
+      d_program_show_time:
+        actualDataNodes: ds_${0..1}.d_program_show_time_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProgramShowTimeModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProgramShowTimeModModel
+      d_seat:
+        actualDataNodes: ds_${0..1}.d_seat_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseSeatModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableSeatModModel
+      d_ticket_category:
+        actualDataNodes: ds_${0..1}.d_ticket_category_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseTicketCategoryModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableTicketCategoryModModel
+      d_program_record_task:
+        actualDataNodes: ds_${0..1}.d_program_record_task_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: create_time
+            shardingAlgorithmName: databaseProgramRecordTaskModModel
+        tableStrategy:
+          standard:
+            shardingColumn: create_time
+            shardingAlgorithmName: tableProgramRecordTaskModModel      
+      d_movie:
+        actualDataNodes: ds_${0..1}.d_movie_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseMovieModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableMovieModModel
+      d_cinema:
+        actualDataNodes: ds_${0..1}.d_cinema_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: databaseCinemaModModel
+        tableStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: tableCinemaModModel
+      d_hall:
+        actualDataNodes: ds_${0..1}.d_hall_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: cinema_id
+            shardingAlgorithmName: databaseHallModModel
+        tableStrategy:
+          standard:
+            shardingColumn: cinema_id
+            shardingAlgorithmName: tableHallModModel
+      d_hall_seat:
+        actualDataNodes: ds_${0..1}.d_hall_seat_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: hall_id
+            shardingAlgorithmName: databaseHallSeatModModel
+        tableStrategy:
+          standard:
+            shardingColumn: hall_id
+            shardingAlgorithmName: tableHallSeatModModel
+      d_movie_screening:
+        actualDataNodes: ds_${0..1}.d_movie_screening_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: databaseMovieScreeningModModel
+        tableStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: tableMovieScreeningModModel
+      d_movie_screening_price:
+        actualDataNodes: ds_${0..1}.d_movie_screening_price_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: databaseMovieScreeningPriceModModel
+        tableStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: tableMovieScreeningPriceModModel
+      d_movie_screening_seat:
+        actualDataNodes: ds_${0..1}.d_movie_screening_seat_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: databaseMovieScreeningSeatModModel
+        tableStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: tableMovieScreeningSeatModModel
+      d_movie_inventory_event:
+        actualDataNodes: ds_${0..1}.d_movie_inventory_event_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: databaseMovieInventoryEventModModel
+        tableStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: tableMovieInventoryEventModModel
+      d_movie_inventory_reconcile_issue:
+        actualDataNodes: ds_${0..1}.d_movie_inventory_reconcile_issue_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: databaseMovieInventoryReconcileIssueModModel
+        tableStrategy:
+          standard:
+            shardingColumn: screening_id
+            shardingAlgorithmName: tableMovieInventoryReconcileIssueModModel
+      d_venue:
+        actualDataNodes: ds_${0..1}.d_venue_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: databaseVenueModModel
+        tableStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: tableVenueModModel
+      d_artist:
+        actualDataNodes: ds_${0..1}.d_artist_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: databaseArtistModModel
+        tableStrategy:
+          standard:
+            shardingColumn: id
+            shardingAlgorithmName: tableArtistModModel
+      d_program_artist:
+        actualDataNodes: ds_${0..1}.d_program_artist_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProgramArtistModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProgramArtistModModel
+      d_movie_profile:
+        actualDataNodes: ds_${0..1}.d_movie_profile_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseMovieProfileModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableMovieProfileModModel
+      d_movie_media:
+        actualDataNodes: ds_${0..1}.d_movie_media_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: movie_id
+            shardingAlgorithmName: databaseMovieMediaModModel
+        tableStrategy:
+          standard:
+            shardingColumn: movie_id
+            shardingAlgorithmName: tableMovieMediaModModel
+      d_project_lifecycle:
+        actualDataNodes: ds_${0..1}.d_project_lifecycle_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProjectLifecycleModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProjectLifecycleModModel
+      d_project_lifecycle_record:
+        actualDataNodes: ds_${0..1}.d_project_lifecycle_record_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProjectLifecycleRecordModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProjectLifecycleRecordModModel
+      d_project_approval_order:
+        actualDataNodes: ds_${0..1}.d_project_approval_order_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProjectApprovalOrderModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProjectApprovalOrderModModel
+      d_project_operation_log:
+        actualDataNodes: ds_${0..1}.d_project_operation_log_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProjectOperationLogModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProjectOperationLogModModel
+      d_project_operation_log_diff:
+        actualDataNodes: ds_${0..1}.d_project_operation_log_diff_${0..1}
+        databaseStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: databaseProjectOperationLogDiffModModel
+        tableStrategy:
+          standard:
+            shardingColumn: program_id
+            shardingAlgorithmName: tableProjectOperationLogDiffModModel
+    broadcastTables:
+      - d_program_category
+      - d_project_approval_policy
+      - d_project_approval_policy_change_log
+    shardingAlgorithms:
+      databaseProgramModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${id % 2}
+      tableProgramModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_program_${(id.intdiv(2)) % 2}
+      databaseProgramGroupModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${id % 2}
+      tableProgramGroupModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_program_group_${(id.intdiv(2)) % 2}
+      databaseProgramShowTimeModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProgramShowTimeModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_program_show_time_${(program_id.intdiv(2)) % 2}
+      databaseSeatModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableSeatModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_seat_${(program_id.intdiv(2)) % 2}
+      databaseTicketCategoryModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableTicketCategoryModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_ticket_category_${(program_id.intdiv(2)) % 2}
+      databaseProgramRecordTaskModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${Math.abs(create_time.hashCode()) % 2}
+      tableProgramRecordTaskModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_program_record_task_${(Math.abs(create_time.hashCode()).intdiv(2)) % 2}    
+      databaseMovieModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableMovieModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_${(program_id.intdiv(2)) % 2}
+      databaseCinemaModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${id % 2}
+      tableCinemaModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_cinema_${(id.intdiv(2)) % 2}
+      databaseHallModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${cinema_id % 2}
+      tableHallModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_hall_${(cinema_id.intdiv(2)) % 2}
+      databaseHallSeatModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${hall_id % 2}
+      tableHallSeatModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_hall_seat_${(hall_id.intdiv(2)) % 2}
+      databaseMovieScreeningModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${id % 2}
+      tableMovieScreeningModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_screening_${(id.intdiv(2)) % 2}
+      databaseMovieScreeningPriceModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${screening_id % 2}
+      tableMovieScreeningPriceModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_screening_price_${(screening_id.intdiv(2)) % 2}
+      databaseMovieScreeningSeatModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${screening_id % 2}
+      tableMovieScreeningSeatModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_screening_seat_${(screening_id.intdiv(2)) % 2}
+      databaseMovieInventoryEventModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${screening_id % 2}
+      tableMovieInventoryEventModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_inventory_event_${(screening_id.intdiv(2)) % 2}
+      databaseMovieInventoryReconcileIssueModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${screening_id % 2}
+      tableMovieInventoryReconcileIssueModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_inventory_reconcile_issue_${(screening_id.intdiv(2)) % 2}
+      databaseVenueModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${id % 2}
+      tableVenueModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_venue_${(id.intdiv(2)) % 2}
+      databaseArtistModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${id % 2}
+      tableArtistModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_artist_${(id.intdiv(2)) % 2}
+      databaseProgramArtistModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProgramArtistModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_program_artist_${(program_id.intdiv(2)) % 2}
+      databaseMovieProfileModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableMovieProfileModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_profile_${(program_id.intdiv(2)) % 2}
+      databaseMovieMediaModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${movie_id % 2}
+      tableMovieMediaModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_movie_media_${(movie_id.intdiv(2)) % 2}
+      databaseProjectLifecycleModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProjectLifecycleModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_project_lifecycle_${(program_id.intdiv(2)) % 2}
+      databaseProjectLifecycleRecordModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProjectLifecycleRecordModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_project_lifecycle_record_${(program_id.intdiv(2)) % 2}
+      databaseProjectApprovalOrderModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProjectApprovalOrderModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_project_approval_order_${(program_id.intdiv(2)) % 2}
+      databaseProjectOperationLogModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProjectOperationLogModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_project_operation_log_${(program_id.intdiv(2)) % 2}
+      databaseProjectOperationLogDiffModModel:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${program_id % 2}
+      tableProjectOperationLogDiffModModel:
+        type: INLINE
+        props:
+          algorithm-expression: d_project_operation_log_diff_${(program_id.intdiv(2)) % 2}
+props:
+  sql-show: false

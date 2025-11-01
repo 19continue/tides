@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="960" viewBox="0 0 720 960" role="img" aria-label="ChaoSheng movie poster moon mail">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#151515"/>
+      <stop offset=".54" stop-color="#2d2d2d"/>
+      <stop offset="1" stop-color="#f6c400"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="960" fill="url(#bg)"/>
+  <circle cx="358" cy="232" r="118" fill="#ffd21f"/>
+  <path d="M402 128a118 118 0 1 0 0 208 92 92 0 1 1 0-208z" fill="#151515" opacity=".82"/>
+  <path d="M138 612h444l-222 136z" fill="#111"/>
+  <rect x="138" y="466" width="444" height="282" rx="22" fill="#fff4bc" stroke="#111" stroke-width="12"/>
+  <path d="M154 492l206 160 206-160" fill="none" stroke="#111" stroke-width="14" stroke-linejoin="round"/>
+  <path d="M112 814c102-34 184-34 288 0s176 34 300-2" fill="none" stroke="#111" stroke-width="14" opacity=".64"/>
+  <path d="M164 854h392" stroke="#111" stroke-width="9" opacity=".52"/>
+</svg>

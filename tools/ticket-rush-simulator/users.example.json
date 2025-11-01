@@ -1,0 +1,11 @@
+[
+  {
+    "userId": "100000000000000001",
+    "ticketUserIds": ["100000000000000101"]
+  },
+  {
+    "email": "demo-user@example.com",
+    "password": "123456",
+    "ticketUserIds": ["100000000000000102"]
+  }
+]

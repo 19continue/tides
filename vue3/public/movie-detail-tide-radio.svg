@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-label="ChaoSheng movie detail tide radio">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1">
+      <stop offset="0" stop-color="#111"/>
+      <stop offset=".64" stop-color="#222"/>
+      <stop offset="1" stop-color="#f4b700"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="520" fill="url(#bg)"/>
+  <circle cx="852" cy="132" r="66" fill="#ffd21f"/>
+  <path d="M80 350c116-72 224-72 344 0s230 72 390 0" fill="none" stroke="#ffd21f" stroke-width="42" opacity=".9"/>
+  <path d="M88 426c142-54 252-54 392 0s246 54 448 0" fill="none" stroke="#fff" stroke-width="10" opacity=".58"/>
+  <rect x="126" y="108" width="286" height="176" rx="20" fill="#141414" stroke="#ffd21f" stroke-width="8"/>
+  <rect x="172" y="144" width="194" height="56" rx="12" fill="#ffd21f"/>
+  <circle cx="218" cy="238" r="20" fill="#ffd21f"/>
+  <circle cx="288" cy="238" r="20" fill="#ffd21f"/>
+</svg>

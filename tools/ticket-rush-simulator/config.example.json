@@ -1,0 +1,60 @@
+{
+  "serviceBaseUrls": {
+    "user": "http://127.0.0.1:6082",
+    "program": "http://127.0.0.1:6086",
+    "order": "http://127.0.0.1:8081"
+  },
+  "endpoints": {
+    "login": "/user/login",
+    "ticketUserList": "/ticket/user/list",
+    "ticketUserAdd": "/ticket/user/add",
+    "programDetail": "/program/detail/v2",
+    "programSeatInfo": "/seat/relate/info",
+    "movieScreeningList": "/movie/screening/list",
+    "movieSeatInfo": "/movie/screening/seat/info",
+    "createOrder": "/program/order/create/v4",
+    "orderCache": "/order/get/cache",
+    "simulatePay": "/order/simulate/pay",
+    "simulatorUserPrepare": "/user/simulator/prepare"
+  },
+  "simulatorPayToken": "tides-demo-local",
+  "simulatorUserToken": "tides-demo-local",
+  "orderVersion": 4,
+  "defaultTicketCount": 1,
+  "reuseUsers": false,
+  "userGenerator": {
+    "count": 100,
+    "startIndex": 1,
+    "mobilePrefix": "19099",
+    "emailDomain": "sandbox.local",
+    "password": "111111",
+    "ticketUserCount": 1,
+    "relNamePrefix": "压测购票人",
+    "overwritePassword": false,
+    "outputPath": "users.generated.json"
+  },
+  "prepare": {
+    "concurrency": 50,
+    "autoCreateTicketUser": false
+  },
+  "rush": {
+    "users": 100,
+    "concurrency": 100,
+    "attemptsPerTarget": 2,
+    "startAt": null
+  },
+  "payment": {
+    "enabled": true,
+    "mode": "simulate",
+    "concurrency": 50
+  },
+  "poll": {
+    "intervalMs": 200,
+    "timeoutMs": 15000
+  },
+  "http": {
+    "timeoutMs": 15000,
+    "retries": 1
+  },
+  "reportDir": "reports"
+}

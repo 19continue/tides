@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>tides</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>tides-redis-tool-framework</artifactId>
+    <name>tides-redis-tool-framework</name>
+    <description>redis工具组件</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>tides-redis-common-framework</module>
+        <module>tides-redis-framework</module>
+        <module>tides-redis-stream-framework</module>
+    </modules>
+
+</project>

@@ -1,0 +1,14 @@
+{
+  "name": "tides-ticket-rush-simulator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "run": "node src/index.mjs run",
+    "ui": "node src/index.mjs ui",
+    "prepare": "node src/index.mjs prepare-users"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

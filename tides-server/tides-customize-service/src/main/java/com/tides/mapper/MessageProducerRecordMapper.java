@@ -1,0 +1,20 @@
+package com.tides.mapper;
+
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tides.entity.MessageProducerRecord;
+import org.apache.ibatis.annotations.Delete;
+
+/**
+ * @description: 消息发送记录 mapper
+ * @author: 19continue
+ **/
+public interface MessageProducerRecordMapper extends BaseMapper<MessageProducerRecord> {
+    
+    /** 
+     * 删除所有记录 
+     * @return Integer 结果
+     * */
+    @Delete("DELETE FROM d_message_producer_record")
+    Integer delete();
+}
