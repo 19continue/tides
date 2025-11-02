@@ -4,6 +4,22 @@
 
 > 项目开始时间：2025.11
 
+## 项目截图
+![项目截图 1](img/1.jpg)
+![项目截图 2](img/2.jpg)
+![项目截图 3](img/3.jpg)
+![项目截图 4](img/4.jpg)
+![项目截图 5](img/5.jpg)
+![项目截图 6](img/6.jpg)
+![项目截图 7](img/7.jpg)
+![项目截图 8](img/8.jpg)
+![项目截图 9](img/9.jpg)
+![项目截图 10](img/10.jpg)
+![项目截图 11](img/11.jpg)
+![项目截图 12](img/12.jpg)
+![项目截图 13](img/13.jpg)
+![项目截图 14](img/14.jpg)
+
 ## 目录
 - `tides-server`：后端业务服务
 - `tides-server-client`：服务间 DTO / VO / Feign 定义
